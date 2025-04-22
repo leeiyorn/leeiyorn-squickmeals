@@ -13,7 +13,7 @@ const Aboutus = () => {
           </div>
           <div class="heroImage">
             {/* Replace with your actual image */}
-            <img src="/images/logocompany.webp" alt="Delicious Food Delivery" />
+            <img src="/images/company .png" alt="Delicious Food Delivery" />
           </div>
         </section>
   
@@ -44,7 +44,7 @@ const Aboutus = () => {
   
         <section class="ourTeamSection">
           <h2 class="heading">Meet the Team</h2>
-          <p class="para">
+          <p class=" text-black">
             Behind [leeiyorn's Quick Meals] is a dedicated team of food enthusiasts, tech innovators, and logistics experts who are passionate about making your food delivery experience exceptional.
           </p>
           <div class="teamMembers">
@@ -69,7 +69,7 @@ const Aboutus = () => {
             </div>
           </div>
         </section>
-  
+
         <section class="contactUsSection">
           <h2>Get in Touch</h2>
           <p>
