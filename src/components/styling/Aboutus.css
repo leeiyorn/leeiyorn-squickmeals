@@ -76,9 +76,13 @@
   }  
  .para{
     text-decoration-color: black;
+    font-size: 23px;
+ }
+
+ .list2{
+  text-rendering: initial;
  }
   
-
 
 
  .mycontainer2 {

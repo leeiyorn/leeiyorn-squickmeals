@@ -65,7 +65,7 @@ const filtered_products =products.filter((item) =>
 
   return (
 
-    <div className="mycontainer2">
+    <div className="mycontainer">
       <ImageCarousel/>
       <div className="row p-3">
         <div className="col-md-4"></div>
@@ -94,14 +94,14 @@ const filtered_products =products.filter((item) =>
   {filtered_products .map((product)=>(
 
   <div className="col-md-3 justify-content-center mt-3">
-    <div className="car shadow p-1">
+    <div className="car shadow p-3">
       <img src={img_url + product.product_photo} alt="" className="product_img"/>
 
       {/* product details */}
       <div className="card-body">
-        <h5 className="text-dark">{product.product_name}</h5>
+        <h5 className="text-white">{product.product_name}</h5>
         <p className="text-muted">{product.product_description.slice (0,20)}...</p>
-        <b className="text-warning"><span className="text-dark">Kes</span>{product.product_cost}</b> <br />
+        <b className="text-danger"><span className="text-dark">Kes</span>{product.product_cost}</b> <br />
          <button className="btn btn-info"onClick={()=>navigate("/payup",{state:{product}})}>Buy Now</button>
       </div>
     </div>

@@ -30,10 +30,10 @@ const Aboutus = () => {
   
         <section class="ourMissionSection">
           < h2 class="heading">Our Mission</h2>
-          <p>
+          <  p class="para">
             Our mission is to be the leading food delivery platform that empowers local restaurants and provides customers with a delightful and hassle-free dining experience at home, in the office, or wherever they may be. We strive to:
           </p>
-          <ul>
+          <ul class="list2">
             <li>Offer a diverse selection of high-quality food options.</li>
             <li>Provide a user-friendly and intuitive ordering process.</li>
             <li>Ensure fast and reliable delivery services.</li>
