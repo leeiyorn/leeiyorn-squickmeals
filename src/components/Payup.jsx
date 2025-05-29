@@ -1,102 +1,183 @@
-import axios from "axios";
-import { useState } from "react";
+// UPDATED Payup.jsx to support multiple products
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import axios from "axios";
+
 
 const Payup = () => {
-
-  // we can use the useLoaction hook to get the details that have been passed from the get products component
-  const {product} = useLocation().state || {};
+  const { cart = [] } = useLocation().state || {};
+  const navigate = useNavigate();
 
   const [phone, setPhone] = useState("");
-
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [showReceipt, setShowReceipt] = useState(false);
+  const [paidItems, setPaidItems] = useState([]);
 
-  // implement the function that will handle the pay now activity
-  const payNow = async (e) =>{
-    // prevent the site from reloading
-    e.preventDefault()
+  const img_url = "https://leeiyorn.pythonanywhere.com/static/images/";
 
-    //set the loading hook with a message
-    setLoading("Please wait as we complete the payment")
+  const totalAmount = cart.reduce(
+    (sum, item) => sum + Number(item.product_cost) * Number(item.quantity || 1),
+    0
+  );
 
-    try{
-      // create a new form data object
-      const data = new FormData()
+  const payNow = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    setShowReceipt(false);
 
-      // append the two details into the form data created
-      data.append("amount", product.product_cost)
-      data.append("phone", phone)
+    try {
+      const data = new FormData();
+      data.append("amount", totalAmount);
+      data.append("phone", phone);
 
-      // access the post function in axios
-      const response = await axios.post("https://leeiyorn.pythonanywhere.com/api/mpesa_payment", data)
+      const response = await axios.post(
+        "https://leeiyorn.pythonanywhere.com/api/mpesa_payment",
+        data
+      );
 
-      // set the loading hook back to default
-      setLoading("");
-
-      // update the success hook with the response from the API
-      setSuccess(response.data.message)
-
-      // clear the the phone number hook
+      setSuccess(response.data.message);
+      setPaidItems(cart);
       setPhone("");
-    }
-    catch(error){
-      // set the loading hook back to default
-      setLoading("");
+      setShowReceipt(true);
 
-      // update the error hook with the error response
-      setError(error.message)
+      setTimeout(() => {
+        navigate("/getmeals");
+      }, 5000);
+    } catch (error) {
+      setError(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
     }
-  }
-
-  // console.log(product)
-   //specify the image url
-  const img_url = "https://leeiyorn.pythonanywhere.com/static/images/"
+  };
 
   return (
-    <div className="row mt-4 p-3">
-      <div className="col-md-6">
-        <div className="card shadow">
-          <div className="card-body">
+    <div className="container py-5">
+      {loading && (
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)", zIndex: 9999, backdropFilter: "blur(3px)" }}
+        >
+          <div className="text-center p-5 bg-white rounded-3 shadow-lg">
+            <div className="spinner-border text-primary" style={{ width: "3rem", height: "3rem" }}></div>
+            <h3 className="mt-3">Processing Payment...</h3>
+          </div>
+        </div>
+      )}
 
-              <img src={img_url + product.product_photo} alt="" className="product_img"/>
+      <div className="row justify-content-center">
+        <div className="col-lg-10">
+          <div className="card border-0 shadow-lg">
+            <div className="card-body p-5">
+              <h3 className="mb-4">Payment Summary</h3>
 
-               <h3 className="text-info">{product.product_name}</h3>
+              {showReceipt ? (
+                <>
+                  <div className="alert alert-success">
+                    <h5>Payment Successful!</h5>
+                    <p>{success}</p>
+                    <p className="text-muted">Redirecting you back to meals...</p>
+                  </div>
+                  {paidItems.map((product) => (
+                    <div key={product.id} className="card mb-3 shadow-sm">
+                      <div className="row g-0">
+                        <div className="col-md-4">
+                          <img
+                            src={img_url + product.product_photo}
+                            alt={product.product_name}
+                            className="img-fluid rounded-start"
+                            style={{ objectFit: "cover", height: "100%" }}
+                          />
+                        </div>
+                        <div className="col-md-8">
+                          <div className="card-body">
+                            <h5 className="card-title">{product.product_name}</h5>
+                            <p className="card-text text-muted">{product.product_description}</p>
+                            <p className="card-text">
+                              <span className="badge bg-success fs-6">
+                                {product.quantity} x KES {product.product_cost} = KES{" "}
+                                {product.product_cost * (product.quantity || 1)}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="text-end fw-bold fs-5">
+                    Total Paid: <span className="text-success">KES {totalAmount}</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {cart.length === 0 ? (
+                    <p className="text-muted">No items in cart.</p>
+                  ) : (
+                    <div className="mb-4">
+                      {cart.map((product) => (
+                        <div key={product.id} className="card mb-3 shadow-sm">
+                          <div className="row g-0">
+                            <div className="col-md-4">
+                              <img
+                                src={img_url + product.product_photo}
+                                alt={product.product_name}
+                                className="img-fluid rounded-start"
+                                style={{ objectFit: "cover", height: "100%" }}
+                              />
+                            </div>
+                            <div className="col-md-8">
+                              <div className="card-body">
+                                <h5 className="card-title">{product.product_name}</h5>
+                                <p className="card-text text-muted">{product.product_description}</p>
+                                <p className="card-text">
+                                  <span className="badge bg-success fs-6">
+                                    {product.quantity} x KES {product.product_cost} = KES{" "}
+                                    {product.product_cost * (product.quantity || 1)}
+                                  </span>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      <div className="text-end fw-bold fs-5">
+                        Total Amount: <span className="text-success">KES {totalAmount}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  <form onSubmit={payNow}>
+                    {error && <div className="alert alert-danger">{error}</div>}
+                    <div className="mb-3">
+                      <label>M-PESA Phone Number</label>
+                      <input
+                        type="tel"
+                        className="form-control"
+                        placeholder="2547XXXXXXXX"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        required
+                        pattern="[0-9]{9,12}"
+                      />
+                    </div>
+
+                    <button className="btn btn-success w-100 py-2" type="submit" disabled={loading}>
+                      Pay KES {totalAmount}
+                    </button>
+                  </form>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
-
-      <div className="col-md-6">
-        <h1 className="text-danger"> Kes {product.product_cost} </h1>
-        <p className="text-dark"> {product.product_description} </p>
-        <h5 className="text-success">LIPA NA M-PESA</h5>
-        <form className="card shadow p-4" onSubmit={payNow}>
-
-        <b className="text-success">{loading}</b>
-          <b className="text-success">{success}</b>
-          <b className="text-danger">{error}</b>
-
-          <input
-          type="number"
-          value={product.product_cost}
-          readOnly
-          className="form-control" /> <br />
-
-          <input
-          type="number"
-          placeholder="Enter the phone number 2547XXXXXX"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className="form-control" /> <br /> <br />
-
-          {/* {phone} */}
-
-          <button className="btn btn-success"><b>Pay Now</b></button>
-        </form>
-      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Payup
+export default Payup;

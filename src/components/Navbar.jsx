@@ -36,9 +36,17 @@ const Navbar = () => {
 
           {/* Authorization Links (Aligned Right) */}
           <ul className="navbar-nav ms-auto">
+
                 <li className="nav-item">
                   <b><Link to="/aboutus" className="nav-link">About us</Link></b>
                 </li>
+
+                <li className="nav-item">
+                  <b><Link to="/home" className="nav-link">Link</Link></b>
+                </li>
+
+
+
             <li className="nav-item">
               <Link to="/Login" className="btn btn-outline-primary me-2">Log In</Link>
             </li>

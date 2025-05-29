@@ -1,47 +1,95 @@
 import { Link } from "react-router-dom";
-
+import './styling/Footer.css'; // Make sure to create this CSS file
 
 const Footer = () => {
   return (
-  <div>
-      <section className="row  mt-4 footer-background-color">
-          <div className="col-md-4 text-left text-light">
-              <h5 className="p-2 text-center text-info">About Us</h5>
-              <p className="text-dark">We are a created Delivery company tasked with ensuring our customers get the best Meals
-                from the best 🍽 in town </p>
-              <p className=""></p> <br />
-              <p> <Link to={'/aboutus'} className="text-danger"> More Aboutus....</Link></p>
+    <div className="footer-container">
+      {/* Floating Food Animations */}
+      <div className="floating-foods">
+        <div className="food-item pizza">🍕</div>
+        <div className="food-item burger">🍔</div>
+        <div className="food-item soda">🥤</div>
+        <div className="food-item icecream">🍦</div>
+      </div>
 
-              
-              <br/>
+      <section className="row footer-background">
+        {/* About Us Section */}
+        <div className="col-md-4 footer-about">
+          <h5 className="footer-title">About SquickMeals</h5>
+          <p>
+            SquickMeals is your go-to solution for fast, reliable, and delicious meal delivery. 
+            Whether you're working late, studying, or just relaxing at home, we ensure your favorite 
+            meals arrive at your door hot and fresh. With a curated selection of top-rated restaurants, 
+            we bring a gourmet experience right to your table — no hassle, just flavor!
+          </p>
+          <div className="animated-plate">🍽️</div>
+          <p>
+            <Link to="/aboutus" className="footer-link">
+              Discover Our Story...
+            </Link>
+          </p>
+        </div>
+
+        {/* Contact Form Section */}
+        <div className="col-md-4 footer-contact">
+          <h5 className="footer-title">We’d Love to Hear from You</h5>
+          <p>
+            Got a question, suggestion, or craving a partnership? Drop us a message and we’ll get back to 
+            you faster than your next order arrives. Your feedback helps us improve every bite of your experience.
+          </p>
+          <form className="footer-form">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="form-input"
+            />
+            <textarea
+              rows="4"
+              placeholder="Tell us what’s on your mind..."
+              className="form-textarea"
+            ></textarea>
+            <button type="submit" className="submit-btn">
+              Send Message <span className="send-icon">✉️</span>
+            </button>
+          </form>
+        </div>
+
+        {/* Social & Contact Info Section */}
+        <div className="col-md-4 footer-social">
+          <h5 className="footer-title">Stay Connected</h5>
+          <p>
+            Follow us on social media and be the first to know about special deals, new 
+            restaurant partners, and exciting updates from the SquickMeals community.
+          </p>
+          <div className="social-icons">
+            <a href="https://facebook.com" className="social-icon" target="_blank" rel="noopener noreferrer">
+              <span className="icon-facebook">📘 Facebook</span>
+            </a>
+            <br />
+            <a href="https://instagram.com" className="social-icon" target="_blank" rel="noopener noreferrer">
+              <span className="icon-instagram">📷 Instagram</span>
+            </a>
           </div>
-          <div className="col-md-4 text-light">
-              <h5 className="p-2 text-center text-info">Reach Us Out</h5>
-              <input className="form-control" type="email" placeholder="Enter your email"/>
-              <br/>
-              <textarea className="form-control" rows="7" placeholder="Leave a comment"></textarea>
-              <br/>
-              <input type="submit" value="Send Message" className="btn btn-primary"/>
-          </div>
-          <div className="col-md-4 ">
-              <h4 className="text-center text-info">Connect With Us</h4>
-              <br/>
-              <a href="https://facebook.com">
-              <img src="images/facebook.jpeg" alt="" className="socialspictures"/>
-              </a>
-              <a href="https://instagram.com">
-              <img src="images/gram.jpeg" alt="" className="socialspictures"/>
-              </a>
-              <p className="text-dark"> For more information please fell free to contact us on;</p><br />
-              <p className="text-dark">+254 721512266 OR +254 726208483</p>
-   </div>
+          <p className="contact-info mt-3">
+            <strong>Call or WhatsApp Us:</strong><br />
+            <span className="phone-icon">📞</span> +254 721 512 266<br />
+            <span className="phone-icon">📞</span> +254 726 208 483
+          </p>
+          <div className="animated-delivery">🚚</div>
+        </div>
       </section>
-      <footer className="text-white text-center p-2 mt-2 bootom-footer">
-              <h5>Developed by Leeiyorn &copy; 2025.All rights reserved</h5>
+
+      {/* Bottom Footer Note */}
+      <footer className="footer-bottom text-center mt-4">
+        <h5>
+          Designed & Developed with ❤️ by <strong>Leeiyorn</strong> &copy; {new Date().getFullYear()}. All rights reserved.
+        </h5>
+        <p>
+          SquickMeals — Satisfying your cravings, one quick delivery at a time.
+        </p>
       </footer>
-  </div>
+    </div>
   );
-  }
-   
- 
-  export default Footer;
+};
+
+export default Footer;
