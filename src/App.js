@@ -45,6 +45,7 @@ function App() {
           <Route path='/payup' element={<Payup cart={cart} clearCart={clearCart} />} />
           <Route path='/aboutus' element={<AboutUs />} />
           <Route path='/home' element={<Home />} />
+          
           <Route path='/*' element={<Notfound />} />
         </Routes>
       </div>

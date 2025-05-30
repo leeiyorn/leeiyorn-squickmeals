@@ -32,7 +32,7 @@ const Aboutus = () => {
           </div>
           <div class="heroImage" style={{flex: 1}}>
             <img 
-              src="/images/company.png" 
+              src="/images/my.png" 
               alt="Delicious Food Delivery" 
               style={{
                 borderRadius: '15px',

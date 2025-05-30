@@ -1,14 +1,17 @@
 // UPDATED Payup.jsx to support multiple products
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
-
 const Payup = () => {
-  const { cart = [] } = useLocation().state || {};
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const cart = location.state?.cart || [];
 
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,16 +48,33 @@ const Payup = () => {
       setPaidItems(cart);
       setPhone("");
       setShowReceipt(true);
-
-      setTimeout(() => {
-        navigate("/getmeals");
-      }, 5000);
     } catch (error) {
       setError(error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
   };
+
+  // Redirect after payment success
+  useEffect(() => {
+    if (showReceipt) {
+      const timer = setTimeout(() => {
+        navigate("/");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showReceipt, navigate]);
+
+  if (!cart.length && !showReceipt) {
+    return (
+      <div className="container py-5 text-center">
+        <h4>No items in your cart.</h4>
+        <button className="btn btn-primary mt-3" onClick={() => navigate("/")}>
+          Go Back to Meals
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="container py-5">
@@ -115,41 +135,37 @@ const Payup = () => {
                 </>
               ) : (
                 <>
-                  {cart.length === 0 ? (
-                    <p className="text-muted">No items in cart.</p>
-                  ) : (
-                    <div className="mb-4">
-                      {cart.map((product) => (
-                        <div key={product.id} className="card mb-3 shadow-sm">
-                          <div className="row g-0">
-                            <div className="col-md-4">
-                              <img
-                                src={img_url + product.product_photo}
-                                alt={product.product_name}
-                                className="img-fluid rounded-start"
-                                style={{ objectFit: "cover", height: "100%" }}
-                              />
-                            </div>
-                            <div className="col-md-8">
-                              <div className="card-body">
-                                <h5 className="card-title">{product.product_name}</h5>
-                                <p className="card-text text-muted">{product.product_description}</p>
-                                <p className="card-text">
-                                  <span className="badge bg-success fs-6">
-                                    {product.quantity} x KES {product.product_cost} = KES{" "}
-                                    {product.product_cost * (product.quantity || 1)}
-                                  </span>
-                                </p>
-                              </div>
+                  <div className="mb-4">
+                    {cart.map((product) => (
+                      <div key={product.id} className="card mb-3 shadow-sm">
+                        <div className="row g-0">
+                          <div className="col-md-4">
+                            <img
+                              src={img_url + product.product_photo}
+                              alt={product.product_name}
+                              className="img-fluid rounded-start"
+                              style={{ objectFit: "cover", height: "100%" }}
+                            />
+                          </div>
+                          <div className="col-md-8">
+                            <div className="card-body">
+                              <h5 className="card-title">{product.product_name}</h5>
+                              <p className="card-text text-muted">{product.product_description}</p>
+                              <p className="card-text">
+                                <span className="badge bg-success fs-6">
+                                  {product.quantity} x KES {product.product_cost} = KES{" "}
+                                  {product.product_cost * (product.quantity || 1)}
+                                </span>
+                              </p>
                             </div>
                           </div>
                         </div>
-                      ))}
-                      <div className="text-end fw-bold fs-5">
-                        Total Amount: <span className="text-success">KES {totalAmount}</span>
                       </div>
+                    ))}
+                    <div className="text-end fw-bold fs-5">
+                      Total Amount: <span className="text-success">KES {totalAmount}</span>
                     </div>
-                  )}
+                  </div>
 
                   <form onSubmit={payNow}>
                     {error && <div className="alert alert-danger">{error}</div>}

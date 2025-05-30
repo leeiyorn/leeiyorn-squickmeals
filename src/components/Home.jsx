@@ -9,7 +9,7 @@ const HomePage = () => {
     { 
       id: 1, 
       name: 'Uber Eats', 
-      logo: '/images/uber-eats.png',
+      logo: '/images/logocompany.webp',
       url: 'https://www.ubereats.com',
       description: 'Fast delivery from your favorite restaurants',
       rating: 4.7
@@ -17,7 +17,7 @@ const HomePage = () => {
     { 
       id: 2, 
       name: 'DoorDash', 
-      logo: '/images/doordash.png',
+      logo: '/images/doordash.jpeg',
       url: 'https://www.doordash.com',
       description: 'Delivery from restaurants, grocery stores, and more',
       rating: 4.6
@@ -25,23 +25,23 @@ const HomePage = () => {
     { 
       id: 3, 
       name: 'Grubhub', 
-      logo: '/images/grubhub.png',
-      url: 'https://www.grubhub.com',
+      logo: '/images/Grubhub-logo.jpg',
+      url: 'https://www.grubhub.com.',
       description: 'Order food delivery from local restaurants',
       rating: 4.5
     },
     { 
       id: 4, 
       name: 'Postmates', 
-      logo: '/images/postmates.png',
-      url: 'https://www.postmates.com',
+      logo: '/images/postmates-1.svg',
+      url: 'https://www.postmates.',
       description: 'Food, groceries, and anything you need delivered',
       rating: 4.4
     },
     { 
       id: 5, 
       name: 'Deliveroo', 
-      logo: '/images/deliveroo.png',
+      logo: '/images/delivero.webp',
       url: 'https://deliveroo.co.uk',
       description: 'Restaurant food delivery to your door',
       rating: 4.6
@@ -49,7 +49,7 @@ const HomePage = () => {
     { 
       id: 6, 
       name: 'Just Eat', 
-      logo: '/images/just-eat.png',
+      logo: '/images/justeat.webp',
       url: 'https://www.just-eat.co.uk',
       description: 'Order takeaway online from local restaurants',
       rating: 4.5
@@ -168,10 +168,10 @@ const HomePage = () => {
       <footer className="footer">
         <p>© {new Date().getFullYear()} Food Delivery Aggregator. All rights reserved.</p>
         <div className="footer-links">
-          <a href="/about">About Us</a>
+          <a href="/aboutus">About Us</a>
           <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms of Service</a>
-          <a href="/contact">Contact</a>
+          <a href="/aboutus">Terms of Service</a>
+          <a href="/aboutus">Contact</a>
         </div>
       </footer>
     </div>
