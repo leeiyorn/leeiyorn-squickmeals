@@ -87,14 +87,39 @@ const Getmeals = () => {
     setChatMessages([...chatMessages, userMessage, botMessage]);
     setChatInput("");
   };
-
   const generateBotResponse = (input) => {
-    const text = input.toLowerCase();
+    const text = input.toLowerCase().trim();
+  
+    // New detailed responses
+    if (/hi|hello|hey|hola/.test(text)) {
+      return '👋 Hello! Welcome to Leeiyorn Squick Meals! What can we get for you today?';
+    } else if (/menu|offer|serve/.test(text)) {
+      return 'Here\'s what\'s cooking today: 🍔 Burgers, 🍕 Pizza, 🍣 Sushi, 🥗 Salads. Need recommendations?';
+    } else if (/burger/.test(text)) {
+      return 'Our juicy burgers come with crispy fries! Try the Spicy BBQ or Cheesy Deluxe. Want to order?';
+    } else if (/pizza/.test(text)) {
+      return '🍕 Our wood-fired pizzas are amazing! Choose from Margherita, Pepperoni, or Veggie Supreme.';
+    } else if (/sushi/.test(text)) {
+      return '🍣 Fresh sushi daily! Popular choices: Dragon Roll, Salmon Nigiri, or our Squick Special Roll.';
+    } else if (/deliver|order/.test(text)) {
+      return '🚚 Yes! We deliver within 5 miles. Order online at leeiyorn-squickmeals.vercel.app or call us!';
+    } else if (/hour|open|close/.test(text)) {
+      return '⏰ Open daily: 10AM-10PM (Kitchen closes at 9:30PM)';
+    } else if (/contact|support|help/.test(text)) {
+      return '📞 Call: (123) 456-7890 | ✉️ Email: orders@leeiyorn.com | 📍 123 Foodie Street';
+    } else if (/bye|quit|exit/.test(text)) {
+      return '👋 Thanks for chatting! Come back when you\'re hungry!';
+    }
+  
+    // Original basic responses as fallback
     if (text.includes("delivery")) return "We offer quick deliveries within your area.";
     if (text.includes("payment")) return "We accept M-PESA for all orders.";
     if (text.includes("menu") || text.includes("meals")) return "Browse our meal options above.";
+  
+    // Default fallback
     return "I'm here to help with meals, delivery, or payments!";
   };
+  
 
   return (
     <div className="mycontainer2" style={{ position: 'relative' }}>

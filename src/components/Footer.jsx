@@ -15,9 +15,9 @@ const Footer = () => {
       <section className="row footer-background">
         {/* About Us Section */}
         <div className="col-md-4 footer-about">
-          <h5 className="footer-title">About SquickMeals</h5>
+          <h5 className="footer-title">About Leeiyorn's Quick Meals</h5>
           <p>
-            SquickMeals is your go-to solution for fast, reliable, and delicious meal delivery. 
+            Leeiyorn's Quick Meals is your go-to solution for fast, reliable, and delicious meal delivery. 
             Whether you're working late, studying, or just relaxing at home, we ensure your favorite 
             meals arrive at your door hot and fresh. With a curated selection of top-rated restaurants, 
             we bring a gourmet experience right to your table — no hassle, just flavor!
