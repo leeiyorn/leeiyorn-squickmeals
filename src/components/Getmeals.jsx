@@ -4,13 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import { Carousel } from "bootstrap/dist/js/bootstrap.min";
 import { FaShoppingCart, FaComments, FaTrash } from 'react-icons/fa';
-
-
-
-
-
 import ImageCarousel from "./Carousel";
-
 import Chatbot from "./Chatbot"
 
 const Getmeals = () => {
@@ -50,23 +44,28 @@ const Getmeals = () => {
 
   const addToCart = (product) => {
     setCart(prevCart => {
-      const existing = prevCart.find(item => item.id === product.id);
-      if (existing) {
-        return prevCart.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
+      const existingItemIndex = prevCart.findIndex(item => item.product_id === product.product_id);
+      
+      if (existingItemIndex !== -1) {
+        const updatedCart = [...prevCart];
+        updatedCart[existingItemIndex] = {
+          ...updatedCart[existingItemIndex],
+          quantity: updatedCart[existingItemIndex].quantity + 1
+        };
+        return updatedCart;
       }
+
       return [...prevCart, { ...product, quantity: 1 }];
     });
   };
 
-  const updateQuantity = (id, newQty) => {
-    if (newQty < 1) return removeFromCart(id);
-    setCart(cart.map(item => item.id === id ? { ...item, quantity: newQty } : item));
+  const updateQuantity = (product_id, newQty) => {
+    if (newQty < 1) return removeFromCart(product_id);
+    setCart(cart.map(item => item.product_id === product_id ? { ...item, quantity: newQty } : item));
   };
 
-  const removeFromCart = (id) => {
-    setCart(cart.filter(item => item.id !== id));
+  const removeFromCart = (product_id) => {
+    setCart(cart.filter(item => item.product_id !== product_id));
   };
 
   const calculateTotal = () => {
@@ -87,10 +86,10 @@ const Getmeals = () => {
     setChatMessages([...chatMessages, userMessage, botMessage]);
     setChatInput("");
   };
+
   const generateBotResponse = (input) => {
     const text = input.toLowerCase().trim();
   
-    // New detailed responses
     if (/hi|hello|hey|hola/.test(text)) {
       return '👋 Hello! Welcome to Leeiyorn Squick Meals! What can we get for you today?';
     } else if (/menu|offer|serve/.test(text)) {
@@ -111,19 +110,15 @@ const Getmeals = () => {
       return '👋 Thanks for chatting! Come back when you\'re hungry!';
     }
   
-    // Original basic responses as fallback
     if (text.includes("delivery")) return "We offer quick deliveries within your area.";
     if (text.includes("payment")) return "We accept M-PESA for all orders.";
     if (text.includes("menu") || text.includes("meals")) return "Browse our meal options above.";
   
-    // Default fallback
     return "I'm here to help with meals, delivery, or payments!";
   };
-  
 
   return (
     <div className="mycontainer2" style={{ position: 'relative' }}>
-      {/* Inline styles */}
       <style>
         {`
         .cart-icon {
@@ -247,7 +242,6 @@ const Getmeals = () => {
 
       <ImageCarousel />
 
-      {/* Search and cart icon */}
       <div className="row p-3 sticky-top bg-white shadow-sm" style={{ zIndex: 1000 }}>
         <div className="col-md-4" />
         <div className="col-md-4 d-flex align-items-center">
@@ -282,7 +276,7 @@ const Getmeals = () => {
         <div className="products-scroll-container p-3" style={{ overflowX: showCart ? 'auto' : 'visible', whiteSpace: showCart ? 'nowrap' : 'normal' }}>
           <div className={showCart ? "d-inline-flex" : "row"}>
             {filtered_products.map(product => (
-              <div className={showCart ? "product-card-scroll" : "col-md-3 mt-3"} key={product.id}>
+              <div className={showCart ? "product-card-scroll" : "col-md-3 mt-3"} key={product.product_id}>
                 <div className="card shadow p-3 h-100">
                   <img
                     src={img_url + product.product_photo}
@@ -307,7 +301,6 @@ const Getmeals = () => {
         </div>
       )}
 
-      {/* Cart Overlay */}
       {showCart && (
         <>
           <div className="cart-backdrop" onClick={() => setShowCart(false)} />
@@ -323,7 +316,7 @@ const Getmeals = () => {
               <>
                 <div style={{ maxHeight: '50vh', overflowY: 'auto' }}>
                   {cart.map(item => (
-                    <div className="d-flex align-items-center border-bottom py-2" key={item.id}>
+                    <div className="d-flex align-items-center border-bottom py-2" key={item.product_id}>
                       <img
                         src={img_url + item.product_photo}
                         alt={item.product_name}
@@ -337,10 +330,10 @@ const Getmeals = () => {
                         type="number"
                         value={item.quantity}
                         min="1"
-                        onChange={(e) => updateQuantity(item.id, Number(e.target.value))}
+                        onChange={(e) => updateQuantity(item.product_id, Number(e.target.value))}
                         className="form-control form-control-sm w-25 me-2"
                       />
-                      <button className="btn btn-sm btn-danger" onClick={() => removeFromCart(item.id)}>
+                      <button className="btn btn-sm btn-danger" onClick={() => removeFromCart(item.product_id)}>
                         <FaTrash />
                       </button>
                     </div>
@@ -365,7 +358,6 @@ const Getmeals = () => {
 
       <Footer />
 
-      {/* Chatbot */}
       <button className="chat-toggle" onClick={() => setShowChat(!showChat)}>
         <FaComments />
       </button>
